@@ -127,17 +127,22 @@ if __name__ == "__main__":
 		'B': 'back', 'b': 'back'
 	}
 	makeblock(map)
+	j=0
 	while True:
 		for i in map : print i
-		dir = raw_input('input char A W S D or back.\n')
-		dir = dirmap[dir]
+		movelaw = ['a', 'w', 's', 'd']
+		# dir = raw_input('input char A W S D or back.\n')
+		dir = dirmap[movelaw[j%4]]
+		j+=1
 		if(dir == 'back'):
 			map = deepcopy(oldmap)
 			makeblock(map)
 			continue
 		oldmap = deepcopy(map)
 		movemap(map, dir)
-		if(oldmap != map): makeblock(map)
+		if(oldmap != map): 
+			j=0
+			makeblock(map)
 		if(deaddetected(map)): 
 			print 'dead'
 			for i in map : print i
