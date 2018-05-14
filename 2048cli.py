@@ -4,7 +4,7 @@ from copy import deepcopy
 def makeblock(map):
 	number = [ 2, 4 ]
 	newblock = number[random.randint(0,1)]
-	print newblock
+	# print newblock
 	while True:
 		x, y = random.randint(0, 3),random.randint(0, 3)
 		if(map[x][y]==0): 
@@ -128,11 +128,15 @@ if __name__ == "__main__":
 	}
 	makeblock(map)
 	j=0
+	lp=0
 	while True:
-		for i in map : print i
+		# for i in map : print i
 		movelaw = ['a', 'w', 's', 'd']
 		# dir = raw_input('input char A W S D or back.\n')
-		dir = dirmap[movelaw[j%4]]
+		if(j==-2):dir = dirmap[movelaw[2]]
+		elif(j==-1):dir = dirmap[movelaw[3]]
+		else:dir = dirmap[movelaw[j%3]]
+		print dir
 		j+=1
 		if(dir == 'back'):
 			map = deepcopy(oldmap)
@@ -141,8 +145,11 @@ if __name__ == "__main__":
 		oldmap = deepcopy(map)
 		movemap(map, dir)
 		if(oldmap != map): 
-			j=0
 			makeblock(map)
+			# continue
+		if( j>=0 and (j-1%3==1 or j-1%3==0)): lp+=1
+		else: lp=0
+		if( lp>2 and j>=0): j=-2
 		if(deaddetected(map)): 
 			print 'dead'
 			for i in map : print i

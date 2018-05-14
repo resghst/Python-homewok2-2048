@@ -193,33 +193,23 @@ def ai():
 	global map, oldmap, dirmap
 	makeblock(map)
 	update(window,map)
-	movedir=1
-	downfilure=0
-	ltlaw = ['a', 'w']
-	lttoken = [0, 0]
+	movelaw = ['a', 'w', 's', 'd']
+	j=0
+	lp=0
 	while True:
-		# sleep(0.5)
-		lawact = lttoken[0] + lttoken[1]
-		if(lawact<2): dir = dirmap[ltlaw[movedir]]
-		elif(downfilure): 
-			downfilure = 0
-			dir = dirmap['d']
-		else: dir = dirmap['s']
-		print dir
+		sleep(0.5)
+		if(j==-2):dir = dirmap[movelaw[2]]
+		elif(j==-1):dir = dirmap[movelaw[3]]
+		else:dir = dirmap[movelaw[j%3]]
+		j+=1
 		oldmap = deepcopy(map)
 		movemap(map, dir)
-		if(movedir==0):movedir=1
-		elif(movedir==1):movedir=0
+		print dir
 		if(oldmap != map): 
-			lttoken[0]=0
-			lttoken[1]=0
 			makeblock(map)
-			if(((dir=='down' or dir=='right') and map[0]==[0,0,0,0]) or findmax(map) in map[0]): movedir=0
-			elif((dir=='down' or dir=='right') and map[0]!=[0,0,0,0]): movedir=1
-		else: 
-			if(dir=='right'): downfilure=1
-			lttoken[movedir]=1
-
+		if( j>=0 and (j-1%3==1 or j-1%3==0)): lp+=1
+		else: lp=0
+		if( lp>2 and j>=0): j=-2
 		if(deaddetected(map)): 
 			print 'dead'
 			for i in map : print i
